@@ -2,15 +2,17 @@ import { createContext } from "react";
 import { observable } from 'mobx';
 import { useLocalStore } from "mobx-react-lite";
 import Request from "./request";
+import Modal from "./modal";
 
 const StoreContext = createContext(null);
 
 class Store {
   @observable request = new Request()
+  @observable modal = new Modal()
 }
 
 const useStore = () => {
-  const store = React.useContext(storeContext);
+  const store = React.useContext(StoreContext);
   return store;
 };
 
@@ -26,4 +28,4 @@ function InjectStoreContext({ children }) {
   );
 }
 
-export { InjectStoreContext, StoreContext, initializeData, useStore };
+export { InjectStoreContext, StoreContext, initializeData, useStore, Store };

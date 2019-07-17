@@ -1,10 +1,10 @@
+import React from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
-import Query from "../components/Query";
 
-const Index = () => {
+const Index = (props) => {
   return (
     <Layout>
       <Header className="header">
@@ -86,7 +86,7 @@ const Index = () => {
               minHeight: 280
             }}
           >
-            Content
+            {props.children}
           </Content>
         </Layout>
       </Layout>
@@ -96,6 +96,9 @@ const Index = () => {
 
 Index.getInitialProps = async ctx => {
   console.log(ctx);
+  if (ctx.user) {
+    const user = await fetch('http://localhost:3000/api/users');
+  }
   return {};
 };
 

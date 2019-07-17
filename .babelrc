@@ -7,9 +7,17 @@
       "import",
       {
         "libraryName": "antd",
+        // "libraryDirectory": "es",
         "style": true
-      }
+      }, "antd"
+    ],
+    [
+      "import",
+      {
+        "libraryName": "@1msoft/kant-ui",
+        // "libraryDirectory": "es",
+        "style": true
+      }, "kant-ui"
     ],
   ]
 }
-  

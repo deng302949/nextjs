@@ -1,6 +1,8 @@
 import App, { Container } from 'next/app'
 import React from 'react'
 import { InjectStoreContext, initializeData } from '../stores'
+import Layout from '../components/Layout';
+import '../assets/styles/system-style.less';
 
 class MyMobxApp extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -8,7 +10,7 @@ class MyMobxApp extends App {
     const initialStoreData = initializeData()
 
     if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps({ ...ctx, initialStoreData })
+      pageProps = await Component.getInitialProps({ ctx, initialStoreData })
     }
 
     return {
@@ -22,10 +24,13 @@ class MyMobxApp extends App {
     return (
       <Container>
         <InjectStoreContext initialData={initialStoreData}>
-          <Component {...pageProps} />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
         </InjectStoreContext>
       </Container>
     )
   }
 }
+
 export default MyMobxApp
