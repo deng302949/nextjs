@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { message } from 'antd';
+import Router from 'next/router';
 import { Form, Input, Button } from '@1msoft/kant-ui';
+import PublicLayout from '@layouts/PublicLayout';
 
 import './index.less';
-import LOGO from '../../assets/images/login-logo.png';
-import COLOURSDOT from '../../assets/images/colours-dot.png';
+import LOGO from '@assets/images/login-logo.png';
+import COLOURSDOT from '@assets/images/colours-dot.png';
 
 const { FormItem, FormLayout } = Form;
 const getGrid = FormItem.getGrid;
@@ -158,7 +160,8 @@ const useStateHook = (props) => {
       if (!err) {
         console.log('---form-data----', values);
         message.success(`${type === CONST_TYPE.LOGIN ? '登陆' : '注册'}成功`);
-        props.history.push('/');
+        // props.history.push('/');
+        Router.push('/');
       }
     });
   };
@@ -192,7 +195,7 @@ let LoginRegister = (props) => {
   return (
     <div className="login-register">
       <div>
-        <img src={LOGO} alt="账户系统-logo" className="login-register-logo" />
+      <img src={LOGO} alt="账户系统-logo" className="login-register-logo" />
         <div className="login-register-conten">
           <div className="login-register-conten-title">
             <span onClick={() => { state.changeType(CONST_TYPE.LOGIN); }}
@@ -230,6 +233,7 @@ let LoginRegister = (props) => {
   );
 };
 
+LoginRegister.Layout = PublicLayout;
 LoginRegister = Form.create()(LoginRegister);
 
 export default LoginRegister;

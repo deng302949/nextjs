@@ -7,15 +7,22 @@
       "import",
       {
         "libraryName": "antd",
-        // "libraryDirectory": "es",
+        "libraryDirectory": "lib",
         "style": true
       }, "antd"
+    ],
+    [
+      "import", {
+        "libraryName": "cuke-ui",
+        "libraryDirectory": "es",
+        "style": true
+      }, "cuke-ui"
     ],
     [
       "import",
       {
         "libraryName": "@1msoft/kant-ui",
-        // "libraryDirectory": "es",
+        "libraryDirectory": "lib",
         "style": true
       }, "kant-ui"
     ],

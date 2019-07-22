@@ -155,10 +155,10 @@ class Store {
   }
 }
 
-const storeContext = React.createContext(null);
+const StoreContext = React.createContext(null);
 
 export const useStore = () => {
-  const store = React.useContext(storeContext);
+  const store = React.useContext(StoreContext);
   if (!store) { throw new Error('You have forgot to use StoreProvider, shame on you.'); }
   return store;
 };
@@ -167,8 +167,8 @@ export default (props) => {
   const global = useGlobalStore();
   const store = useLocalStore(() => (new Store(global)));
   return (
-    <storeContext.Provider value={store}>
+    <StoreContext.Provider value={store}>
       {props.children}
-    </storeContext.Provider>
+    </StoreContext.Provider>
   );
 };

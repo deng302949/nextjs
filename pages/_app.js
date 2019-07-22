@@ -1,36 +1,40 @@
-import App, { Container } from 'next/app'
 import React from 'react'
-import { InjectStoreContext, initializeData } from '../stores'
-import Layout from '../components/Layout';
-import '../assets/styles/system-style.less';
+import { Container } from 'next/app'
+import { PageTransition } from 'next-page-transitions'
 
-class MyMobxApp extends App {
-  static async getInitialProps({ Component, ctx }) {
-    let pageProps = {}
-    const initialStoreData = initializeData()
+import { LocaleProvider } from 'antd';
+import zhCN from 'antd/lib/locale-provider/zh_CN';
 
-    if (Component.getInitialProps) {
-      pageProps = await Component.getInitialProps({ ctx, initialStoreData })
-    }
+import { InjectStoreContext } from '../stores'
 
-    return {
-      pageProps,
-      initialStoreData
-    }
-  }
+import '@assets/iconFont/iconfont.css';
+import '@assets/styles/system-style.less';
 
-  render() {
-    const { Component, pageProps, initialStoreData } = this.props
-    return (
-      <Container>
-        <InjectStoreContext initialData={initialStoreData}>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+const MyApp = (props) => {
+  console.log(props, '==props==');
+  const { Component, pageProps } = props
+  return (
+    <Container>
+      <LocaleProvider locale={zhCN}>
+        <InjectStoreContext>
+          <Component.Layout {...props}>
+            <Component {...pageProps}/>
+          </Component.Layout>
         </InjectStoreContext>
-      </Container>
-    )
-  }
+      </LocaleProvider>
+    </Container>
+  );
 }
 
-export default MyMobxApp
+MyApp.getInitialProps = async (context) => {
+  const { Component } = context;
+  let pageProps = {}
+
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(context);
+  }
+
+  return { pageProps };
+}
+
+export default MyApp

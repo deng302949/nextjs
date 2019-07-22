@@ -3,9 +3,9 @@ import './HeaderBlock.module.less';
 
 let HeaderBlock = (props) => {
   return (
-    <div className={'header'}>
-      <i className={`iconfont iconicon1 header-icon`}></i>
-      <span className={'header-text'}>查询表格</span>
+    <div className={'example-header'}>
+      <i className={`iconfont iconicon1 example-header-icon`}></i>
+      <span className={'example-header-text'}>查询表格</span>
     </div>
   );
 };
