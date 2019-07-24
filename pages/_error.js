@@ -1,9 +1,14 @@
 import React from "react";
 import Link from 'next/link';
-// import Link from '@components/Link';
 import { Result, Button } from 'antd';
 import Layout from '@layouts/Layout';
 
+/**
+ * 错误显示页面
+ *
+ * @class Error
+ * @extends {React.Component}
+ */
 class Error extends React.Component {
   static getInitialProps({ res, err }) {
     const statusCode = res ? res.statusCode : err ? err.statusCode : null;
@@ -27,5 +32,5 @@ class Error extends React.Component {
     );
   }
 }
-Error.Layout = Layout
+Error.Layout = Layout;
 export default Error;

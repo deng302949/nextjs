@@ -19,7 +19,7 @@ let Example = (props) => {
 
 Example.getInitialProps = async (context) => {
   return {};
-}
+};
 Example.Layout = Layout;
 
 export default Example;

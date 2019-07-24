@@ -13,6 +13,12 @@ const Home = (props) => {
   );
 };
 
+Home.getInitialProps = async (context) => {
+  console.log(process.env);
+  console.log(process.env.NEXT_SERVER_URL);
+  return {};
+};
+
 Home.Layout = Layout;
 
 export default Home;

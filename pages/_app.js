@@ -1,18 +1,17 @@
-import React from 'react'
-import { Container } from 'next/app'
-import { PageTransition } from 'next-page-transitions'
+import React from 'react';
+import { Container } from 'next/app';
+import { PageTransition } from 'next-page-transitions';
 
 import { LocaleProvider } from 'antd';
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 
-import { InjectStoreContext } from '../stores'
+import { InjectStoreContext } from '../stores';
 
 import '@assets/iconFont/iconfont.css';
 import '@assets/styles/system-style.less';
 
 const MyApp = (props) => {
-  console.log(props, '==props==');
-  const { Component, pageProps } = props
+  const { Component, pageProps } = props;
   return (
     <Container>
       <LocaleProvider locale={zhCN}>
@@ -24,17 +23,17 @@ const MyApp = (props) => {
       </LocaleProvider>
     </Container>
   );
-}
+};
 
 MyApp.getInitialProps = async (context) => {
   const { Component } = context;
-  let pageProps = {}
+  let pageProps = {};
 
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(context);
   }
 
   return { pageProps };
-}
+};
 
-export default MyApp
+export default MyApp;

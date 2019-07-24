@@ -1,28 +1,24 @@
-const withBundleAnalyzer = require('@zeit/next-bundle-analyzer')
-
-const withCss = require('@zeit/next-css')
-const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
-const withLess = require('@zeit/next-less')
-// const withImages = require('next-images');
-const withOptimizedImages = require('next-optimized-images');
-const lessToJS = require('less-vars-to-js')
-const TerserPlugin = require('terser-webpack-plugin')
-const { DefinePlugin } = require('webpack')
 const fs = require('fs')
 const path = require('path')
-const { parsed } = require('dotenv').config();
-// require('dotenv')
-// require('@babel/register');
-const Dotenv = require('dotenv-webpack')
-const { SERVER_URL } = parsed;
+const withCss = require('@zeit/next-css')
+const withLess = require('@zeit/next-less')
+const lessToJS = require('less-vars-to-js')
+const TerserPlugin = require('terser-webpack-plugin')
+
+// build包分析
+const withBundleAnalyzer = require('@zeit/next-bundle-analyzer')
+// 过滤控制台警告
+const FilterWarningsPlugin = require('webpack-filter-warnings-plugin');
 
 // fix: prevents error when .css files are required by node
 if (typeof require !== 'undefined') {
   require.extensions['.less'] = (file) => {}
 }
-if (typeof require !== 'undefined') {
-  require.extensions['.css'] = file => {}
-}
+
+// 配置.env文件
+require('dotenv')
+const Dotenv = require('dotenv-webpack')
+
 const isDev = process.env.NODE_ENV !== 'production';
 
 // Where your modifyVars.less file lives
@@ -47,12 +43,14 @@ module.exports = withLess(
   withCss({
   // 禁用文件路由
   // useFileSystemPublicRoutes: false,
+
   // css模块导入
   // cssModules: true,
+
   // less配置参数
   lessLoaderOptions: {
     javascriptEnabled: true,
-    modifyVars: themeVariables, // make your antd custom effective
+    modifyVars: themeVariables,
     localIdentName: '[local]___[hash:base64:5]',
   },
   webpack: (config, { dev, isServer }) => {
@@ -65,30 +63,26 @@ module.exports = withLess(
             terserOptions: {
               ecma: 6,
               warnings: false,
-              extractComments: false, // remove comment
+              extractComments: false,
               compress: {
-                drop_console: true // remove console
+                drop_console: true
               },
               ie8: false
             }
           }),
-          // new Dotenv({
-          //   path: path.join(__dirname, '.env'),
-          //   systemvars: true
-          // }),
-          new DefinePlugin({
-            'process.env': {
-              SERVER_URL: JSON.stringify(SERVER_URL)
-            }
+          // 配置.env文件
+          new Dotenv({
+            path: path.join(__dirname, '.env'),
+            systemvars: true
           }),
+          // 配置控制台警告过滤
           new FilterWarningsPlugin({
-            exclude: /mini-css-extract-plugin[^]*Conflicting order between:/,
+            exclude: /chunk styles \[mini-css-extract-plugin\]/,
           })
-
       ]);
       config.devtool = 'cheap-module-inline-source-map';
     }
-    // 配置别名
+    // 配置文件路径别名
     config.resolve.alias = {
       ...config.resolve.alias,
       ["@pages"]: path.resolve(__dirname, 'pages'),
@@ -100,6 +94,7 @@ module.exports = withLess(
       ["@config"]: path.resolve(__dirname, 'config'),
     }
 
+    // webpack插件
     config.module.rules = [
       ...config.module.rules,
       ...[
@@ -132,34 +127,26 @@ module.exports = withLess(
           }
         },
         // eslint检测&自动修复
-        // {
-        //   enforce: "pre",
-        //   test: /\.js|jsx|ts$/,
-        //   exclude: [
-        //     path.resolve(__dirname, 'node_modules'),
-        //     path.resolve(__dirname, '.eslintrc'),
-        //   ],
-        //   include: [
-        //     path.resolve(__dirname, 'pages'),
-        //     path.resolve(__dirname, 'components'),
-        //     path.resolve(__dirname, 'assets'),
-        //     path.resolve(__dirname, 'stores'),
-        //     path.resolve(__dirname, 'layouts'),
-        //   ],
-        //   use: [
-        //     { loader: "babel-loader" },
-        //     {
-        //       loader: "eslint-loader",
-        //       options: {
-        //         eslintPath: path.resolve(__dirname, '.eslintrc')
-        //       }
-        //     }
-        //   ],
-        // },
+        {
+          test: /\.js$/,
+          enforce: 'pre',
+          include: [
+            path.resolve(__dirname, 'pages'),
+            path.resolve(__dirname, 'components'),
+            path.resolve(__dirname, 'assets'),
+            path.resolve(__dirname, 'stores'),
+            path.resolve(__dirname, 'layouts'),
+          ],
+          options: {
+            configFile: path.resolve('.eslintrc'),
+            eslint: {
+              configFile: path.resolve(__dirname, '.eslintrc')
+            }
+          },
+          loader: 'eslint-loader'
+        },
       ]
     ];
-    // console.log(config.resolve, config.module.rules, '==config==');
-    // throw(new Error('暂停'));
     return config
   }
 }))

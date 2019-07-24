@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import React, { createContext } from "react";
 import { observable } from 'mobx';
 import { useLocalStore } from "mobx-react-lite";
 import App from "./appFrame";
@@ -8,6 +8,11 @@ import MenuStatus from "./menuStatus";
 
 const StoreContext = createContext(null);
 
+/**
+ * 全局store
+ *
+ * @class Store
+ */
 class Store {
   @observable app = new App()
   @observable modal = new Modal()
@@ -20,6 +25,12 @@ const useStore = () => {
   return store;
 };
 
+/**
+ * 全局store注入
+ *
+ * @param {*} props
+ * @returns
+ */
 function InjectStoreContext(props) {
   const store = useLocalStore(() => (new Store()));
   return (
